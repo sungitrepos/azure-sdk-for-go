@@ -42,9 +42,9 @@ func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *C
 
 // NewServiceClient creates a ServiceClient struct using the specified serviceURL, credential, and options.
 // Pass in nil for options to construct the client with the default ClientOptions.
-func NewCosmosDBServiceClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*ServiceClient, error) {
+func NewServiceClientWithScope(serviceURL string, cred azcore.TokenCredential, options *ClientOptions, scope string) (*ServiceClient, error) {
 	plOpts := runtime.PipelineOptions{
-		PerRetry: []policy.Policy{runtime.NewBearerTokenPolicy(cred, []string{"https://cosmos.azure.com/.default"}, nil)},
+		PerRetry: []policy.Policy{runtime.NewBearerTokenPolicy(cred, []string{scope}, nil)},
 	}
 	client, err := newClient(serviceURL, plOpts, options)
 	if err != nil {
